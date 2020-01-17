@@ -1,6 +1,15 @@
 <p>
   <a routerLink="/admin/products/new" class="btn btn-primary">New Product</a>
 </p>
+<p>
+  <input
+    #query
+    (keyup)="filter(query.value)"
+    placeholder="Search..."
+    type="text"
+    class="form-control"
+  />
+</p>
 <table class="table">
   <thead>
     <tr>

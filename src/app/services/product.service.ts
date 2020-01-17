@@ -1,6 +1,6 @@
+import { Product } from "./../models/product";
 import { AngularFireDatabase } from "@angular/fire/database";
 import { Injectable } from "@angular/core";
-import { Product } from "../models/product";
 
 @Injectable({
   providedIn: "root"
@@ -18,5 +18,13 @@ export class ProductService {
 
   get(productId) {
     return this.db.object("/products/" + productId).snapshotChanges();
+  }
+
+  update(productId, product) {
+    return this.db.object("/products/" + productId).update(product);
+  }
+
+  delete(productId) {
+    return this.db.object("/products/" + productId).remove();
   }
 }

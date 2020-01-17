@@ -13,6 +13,7 @@ import { take, map } from "rxjs/operators";
 export class ProductFormComponent implements OnInit {
   categories$;
   product = {};
+  id;
 
   constructor(
     categoryService: CategoryService,
@@ -22,10 +23,10 @@ export class ProductFormComponent implements OnInit {
   ) {
     this.categories$ = categoryService.getCategories();
 
-    let id = this.route.snapshot.paramMap.get("id");
-    if (id) {
+    this.id = this.route.snapshot.paramMap.get("id");
+    if (this.id) {
       this.productService
-        .get(id)
+        .get(this.id)
         .pipe(
           take(1),
           map(product => {
@@ -38,8 +39,19 @@ export class ProductFormComponent implements OnInit {
     }
   }
   save(product) {
-    this.productService.create(product);
+    if (this.id) {
+      this.productService.update(this.id, product);
+    } else {
+      this.productService.create(product);
+    }
     this.router.navigate(["/admin/products"]);
+  }
+
+  delete() {
+    if (confirm("Are you sure you want to delete this product")) {
+      this.productService.delete(this.id);
+      this.router.navigate(["/admin/products"]);
+    }
   }
 
   ngOnInit() {}
